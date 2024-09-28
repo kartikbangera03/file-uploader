@@ -1,0 +1,95 @@
+<html>
+    <head>
+        <%- include('./headInfo'); %>
+        
+    </head>
+    <body>
+        <%- include("header.ejs")%>
+        <%- include('./dialogDelete', {uploadLink : "/folder/"+ folderInfo.id+"/upload-file"}); %>
+        <%- include('./dialogUpdateForm', {uploadLink : "/folder/"+ folderInfo.id+"/upload-file"}); %>
+        <div class="mainBody">
+
+            <!-- check if logged in user is same as folders owner -->
+            <!-- <%if(user.id === folderInfo.user_id){%> -->
+            <!-- <%}%>    -->
+            <div class="folderOptions">
+                <!-- if root then my library else back link to prev parentfolder -->
+                <div>My Library</div>
+                <div class="options">
+                    <!-- create new folder in current folder -->
+                    <!-- form post to add new folder in same link -->
+                    
+                    <form action="" method="post">
+                        <button class="linkButton" type="submit">New Folder</button>
+                    </form>
+                    
+                    <div class="showUploadDialogButton">Upload File</div>
+
+                </div>
+
+                
+            </div>
+
+            <div>
+                <div>
+                    <!-- Show all files and folders here -->
+                    <!-- Name Size Created Last-Update Options -->
+                    <!-- Temporarily Showing list of subfolders -->
+                    <ul>
+                        
+
+                    </ul>
+
+                    <div class="columnHeaders eachRowData">
+                        <div class="nameColumn">Name</div>
+                        <div class="sizeColumn">Size</div>
+                        <div class="dateColumn">Created</div>
+                        <div class="dateColumn">Last Updated</div>
+                        <div class="optionsColumn">Options</div>
+                    </div>
+
+                    <% for(let i = 0 ; i< subFolders.length;i++){%>
+                        <div class="eachRowData">
+                            <div class="nameColumn"><a href="/folder/<%=subFolders[i].id%>"><%=subFolders[i].name%></a></div>
+                            <div class="sizeColumn" >-</div>
+                       
+                            <% const createdAtTimeString =  commonFunctions.getDateString(Date.parse(String(subFolders[i].createdAt)))%>
+                            <div class="dateColumn"><%=createdAtTimeString%></div>
+
+                            <% const updatedAtTimeString =  commonFunctions.getDateString(Date.parse(String(subFolders[i].updatedAt)))%>
+                            <div  class="dateColumn"><%=updatedAtTimeString%></div>
+                            <div class="eachRowOptions optionsColumn">
+                                <div><a href="/folder/<%=subFolders[i].id%>/update">Edit</a></div>
+                                <div><a href="/folder/<%=subFolders[i].id%>/Delete">Delete</div>
+                            </div>
+                        </div>
+                    <%}%>
+
+                    <% for(let i = 0 ; i< files.length;i++){%>
+                        <div class="eachRowData">
+                            <div class="nameColumn"><a href="/folder/<%=files[i].id%>"><%=files[i].name%></a></div>
+                            <div class="sizeColumn"><%= String(parseInt(files[i].size/1000))+" kb"%></div>
+                            
+                            <% const createdAtTimeString =  commonFunctions.getDateString(Date.parse(String(files[i].createdAt)))%>
+                            <div class="dateColumn"><%=createdAtTimeString%></div>
+
+                            <% const updatedAtTimeString =  commonFunctions.getDateString(Date.parse(String(files[i].updatedAt)))%>
+                            <div  class="dateColumn"><%=updatedAtTimeString%></div>
+
+                            <div class="eachRowOptions optionsColumn">
+                                <div><a href="<%=files[i].url%>" download>Download</a></div>
+                                <div>Edit</div>
+                                <div>Delete</div>
+                            </div>
+                        </div>
+                    <%}%>    
+
+                    
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="/dialogController.js"></script>
+
+    
+</html>

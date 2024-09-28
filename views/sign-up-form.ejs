@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <%- include('./headInfo'); %>
+    </head>
+    <body>
+        <%- include("header.ejs")%>
+
+        <div class="mainBody">
+            <div class="formPage">
+                <form action="" method="POST">
+                    <div>Sign Up Form</div>
+                    <input id="userEmail" name="userEmail" type="email" placeholder="Email Address"/>
+                    <input id="password" name="password" type="password" placeholder="Password"/>
+                    <input id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirm Password"/>
+                    <button>Sign Up</button>
+                    <%- include("./errors.ejs") %>
+        
+                </form>
+            </div>
+            
+        </div>
+    </body>
+</html>
