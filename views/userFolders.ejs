@@ -5,8 +5,9 @@
     </head>
     <body>
         <%- include("header.ejs")%>
-        <%- include('./dialogDelete', {uploadLink : "/folder/"+ folderInfo.id+"/upload-file"}); %>
-        <%- include('./dialogUpdateForm', {uploadLink : "/folder/"+ folderInfo.id+"/upload-file"}); %>
+        <%- include('./uploadFileDialog', {uploadLink : "/folder/"+ folderInfo.id+"/upload-file"}); %>
+        <%- include('./updateFolderNameDialog', {uploadLink : "/folder/"+ folderInfo.id+"/upload-file"}); %>
+        <%- include('./updateFileNameDialog', {uploadLink : "/folder/"+ folderInfo.id+"/upload-file"}); %>
         <div class="mainBody">
 
             <!-- check if logged in user is same as folders owner -->
@@ -59,8 +60,8 @@
                             <% const updatedAtTimeString =  commonFunctions.getDateString(Date.parse(String(subFolders[i].updatedAt)))%>
                             <div  class="dateColumn"><%=updatedAtTimeString%></div>
                             <div class="eachRowOptions optionsColumn">
-                                <div><a href="/folder/<%=subFolders[i].id%>/update">Edit</a></div>
-                                <div><a href="/folder/<%=subFolders[i].id%>/Delete">Delete</div>
+                                <div class="showUpdateFolderDialogButton" id="<%=i%>" style="cursor: pointer;">Edit</div>
+                                <div><a href="/folder/<%=subFolders[i].id%>/Delete" style="cursor: pointer;">Delete</div>
                             </div>
                         </div>
                     <%}%>
@@ -78,8 +79,8 @@
 
                             <div class="eachRowOptions optionsColumn">
                                 <div><a href="<%=files[i].url%>" download>Download</a></div>
-                                <div>Edit</div>
-                                <div>Delete</div>
+                                <div class="showUpdateFileNameDialogButton" id="<%=i%>" style="cursor: pointer;" >Edit</div>
+                                <div style="cursor: pointer;">Delete</div>
                             </div>
                         </div>
                     <%}%>    

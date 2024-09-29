@@ -28,6 +28,12 @@ function getDateString(timestamp){
     return timestring;
 }
 
+function openUpdateFileNameDialog(file_id){
+    
+
+}
+
 module.exports = {
-    getDateString
+    getDateString,
+    openUpdateFileNameDialog
 }

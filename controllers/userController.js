@@ -201,7 +201,11 @@ exports.postLoginForm = [
                 parentFolder: null
             }
         })
+        console.log("ROOT FOLDER")
         console.log(rootFolder)
+        console.log("RESPONSE LOCALS")
+        res.locals.rootFolder = rootFolder[0].id;
+        console.log(res.locals)
         res.redirect("/folder/" + rootFolder[0].id)
 
     })
