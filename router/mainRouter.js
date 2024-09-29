@@ -40,8 +40,9 @@ router.post("/folder/:id", userController.postFolder);
 router.post("/folder/:id/upload-file",upload.single('uploaded-file'),userController.postUploadFileForm);
 
 router.post("/folder/:id/update", userController.updateFolder)
-
 router.get("/folder/:id/delete", userController.deleteFolder)
 
+router.post("/file/:id/update", userController.updateFile)
+router.get("/file/:id/delete", userController.deleteFile)
 
 module.exports = router;

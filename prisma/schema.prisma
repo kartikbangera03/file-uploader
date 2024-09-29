@@ -45,6 +45,7 @@ model File{
   name String @db.VarChar(255)
   size Int
   url String @db.VarChar(255)
+  public_id String @db.VarChar(255)
   parentFolder Folder @relation(fields:[parentFolderId] , references:[id])
   parentFolderId Int
   createdAt DateTime @default(now())

@@ -5,7 +5,7 @@ const db = require("../db/queries");
 const passport = require("passport");
 const fs = require("fs");
 const { PrismaClient } = require("@prisma/client");
-const { cloudinary_js_config } = require("../utils/cloudinary");
+
 const prisma = new PrismaClient();
 const cloudinary = require("../utils/cloudinary");
 const commonFunctions = require("../public/commonFunctions");
@@ -203,9 +203,8 @@ exports.postLoginForm = [
         })
         console.log("ROOT FOLDER")
         console.log(rootFolder)
-        console.log("RESPONSE LOCALS")
-        res.locals.rootFolder = rootFolder[0].id;
-        console.log(res.locals)
+
+        req.session.homeFolderId = rootFolder[0].id
         res.redirect("/folder/" + rootFolder[0].id)
 
     })
@@ -230,7 +229,7 @@ exports.getUploadFileForm = asyncHandler(async (req, res, next) => {
 exports.postUploadFileForm = asyncHandler(async (req, res, next) => {
     console.log("FIle Uploaded")
     console.log(req.file)
-    cloudinary.uploader.upload(req.file.path, { resource_type: "auto", use_filename: true, unique_filename: false, }, async function (err, result) {
+    cloudinary.uploader.upload(req.file.path, { resource_type: "raw", use_filename: true, unique_filename: false, }, async function (err, result) {
         if (err) {
             console.log(err)
             // Add Logic to Show Dialog Box that upload failed and try again
@@ -246,6 +245,7 @@ exports.postUploadFileForm = asyncHandler(async (req, res, next) => {
                 size: result.bytes,
                 parentFolderId: folderId,
                 url: result.url,
+                public_id : result.public_id
             }
         })
         console.log("UPLOADED FILE DETAILS ")
@@ -270,7 +270,7 @@ exports.postUploadFileForm = asyncHandler(async (req, res, next) => {
 
 exports.getFolder = asyncHandler(async (req, res, next) => {
     // need to get all files and folders for current folder 
-    const folderId = parseInt(req.params.id)
+    const folderId = parseInt(req.params.id) ? parseInt(req.params.id) : req.session.homeFolderId;
     const folderInfo = await prisma.folder.findUnique({
         where: {
             id: folderId
@@ -279,6 +279,9 @@ exports.getFolder = asyncHandler(async (req, res, next) => {
     const subFolders = await prisma.folder.findMany({
         where: {
             parentFolderId: folderId
+        } ,
+        orderBy :{
+            updatedAt : 'desc'
         }
 
     })
@@ -286,6 +289,9 @@ exports.getFolder = asyncHandler(async (req, res, next) => {
     const files = await prisma.file.findMany({
         where: {
             parentFolderId: folderId
+        },
+        orderBy :{
+            updatedAt : 'desc'
         }
     })
 
@@ -306,6 +312,106 @@ exports.getFolder = asyncHandler(async (req, res, next) => {
 
 
 
+exports.deleteFolder = asyncHandler(async(req,res)=>{
+    // Delete folder using raw psql query    
+
+    const folderId = parseInt(req.params.id);
+
+    const folderInfo = await prisma.folder.findUnique({
+        where: {
+            id: folderId
+        }
+    })
+
+    let traversalArray = []
+    let folderIdsArray = []
+    let fileIdsArray = []
+
+    traversalArray.push(folderId);
+
+    while(traversalArray.length>0){
+        const currentFolderId = traversalArray.shift(); // pop the current element 
+        folderIdsArray.push(currentFolderId); //add to foldersarray to be deleted later
+
+        //get subfolders and files 
+        const subFolders = await prisma.folder.findMany({
+            where: {
+                parentFolderId: currentFolderId
+            } ,
+            orderBy :{
+                updatedAt : 'desc'
+            }
+    
+        })
+    
+        const files = await prisma.file.findMany({
+            where: {
+                parentFolderId: currentFolderId
+            },
+            orderBy :{
+                updatedAt : 'desc'
+            }
+        })
+
+        // add each subfolder id to traversalArray
+
+        if(subFolders.length>0){
+            subFolders.forEach((folder)=>{
+                traversalArray.push(folder.id)
+            })
+        }
+
+        //add each files public_id to filesArray to delete later
+
+        if(files.length>0){
+            files.forEach((file)=>{
+                fileIdsArray.push(file.public_id)
+            })
+        }
+
+    }   
+
+    console.log("Folders List to be Deleted",folderIdsArray)
+    console.log("Files List to be Deleted ",fileIdsArray);
+    // Add logic to Delete Many Ids , first using cloudinary for files and then using Prisma for folders and files both 
+
+    // await cloudinary.api.delete_resources(
+    //     fileIdsArray,
+    //     function(error, result) {
+    //         console.log(result, error)
+    //     }
+    // );
+
+
+    fileIdsArray.forEach(async (filePublic_id)=>{
+        await cloudinary.uploader.destroy(filePublic_id, { invalidate: true,resource_type: 'raw' }).then(result => console.log(result))
+    })
+
+    const deletedFiles = await prisma.file.deleteMany({
+        where:{
+            public_id:{
+                in:fileIdsArray,
+            }
+        }
+    })
+
+    const deletedFolders = await prisma.folder.deleteMany({
+        where:{
+            id:{
+                in: folderIdsArray
+            }
+        }
+    })
+
+    console.log("Deleted Files :")
+    console.log(deletedFiles);
+    console.log("Deleted Folders :")
+    console.log(deletedFolders);
+
+    res.redirect("/folder/"+folderInfo.parentFolderId)
+})
+
+
 exports.postFolder = asyncHandler(async (req, res) => {
     // create new folder with parent folder as current folder 
     const folderId = parseInt(req.params.id)
@@ -321,9 +427,50 @@ exports.postFolder = asyncHandler(async (req, res) => {
 })
 
 exports.updateFolder = asyncHandler(async(req,res)=>{
-    // Update just the name
+    const folderId = parseInt(req.params.id);   
+    // console.log("Update Details : ")
+    // console.log(folderId)
+    // console.log(req.body.updatedFolderName)
+    const updatedFolder = await prisma.folder.update({
+        where:{
+            id: folderId,
+        },
+        data:{
+            name: req.body.updatedFolderName,
+        },
+    })
+    console.log(updatedFolder)
+    res.redirect("/folder/"+ updatedFolder.parentFolderId)
 })
 
-exports.deleteFolder = asyncHandler(async(req,res)=>{
-    // Delete folder using raw psql query    
-})
+
+
+exports.updateFile = asyncHandler(async(req,res)=>{
+
+    const fileId = parseInt(req.params.id)
+    const updatedFile = await prisma.file.update({
+        where:{
+            id:fileId
+        },
+        data:{
+            name:req.body.updatedFileName
+        }
+    })
+
+    res.redirect("/folder/"+ updatedFile.parentFolderId)
+});
+
+exports.deleteFile = asyncHandler(async(req,res)=>{
+    const fileId = parseInt(req.params.id)
+    const deletedFile = await prisma.file.delete({
+        where:{
+            id:fileId
+        }
+    })
+
+    console.log("DELETED FILE")
+    console.log(deletedFile)
+    console.log("DELETED FILE FROM CLOUDINARY")
+    await cloudinary.uploader.destroy(deletedFile.public_id, { invalidate: true,resource_type: 'raw' }).then(result => console.log(result))
+    res.redirect("/folder/"+ deletedFile.parentFolderId)
+});

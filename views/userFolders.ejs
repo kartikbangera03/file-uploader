@@ -6,8 +6,8 @@
     <body>
         <%- include("header.ejs")%>
         <%- include('./uploadFileDialog', {uploadLink : "/folder/"+ folderInfo.id+"/upload-file"}); %>
-        <%- include('./updateFolderNameDialog', {uploadLink : "/folder/"+ folderInfo.id+"/upload-file"}); %>
-        <%- include('./updateFileNameDialog', {uploadLink : "/folder/"+ folderInfo.id+"/upload-file"}); %>
+        <%- include('./updateFileNameDialog'); %>
+        <%- include('./updateFolderNameDialog'); %>
         <div class="mainBody">
 
             <!-- check if logged in user is same as folders owner -->
@@ -50,6 +50,7 @@
                     </div>
 
                     <% for(let i = 0 ; i< subFolders.length;i++){%>
+                        
                         <div class="eachRowData">
                             <div class="nameColumn"><a href="/folder/<%=subFolders[i].id%>"><%=subFolders[i].name%></a></div>
                             <div class="sizeColumn" >-</div>
@@ -60,13 +61,14 @@
                             <% const updatedAtTimeString =  commonFunctions.getDateString(Date.parse(String(subFolders[i].updatedAt)))%>
                             <div  class="dateColumn"><%=updatedAtTimeString%></div>
                             <div class="eachRowOptions optionsColumn">
-                                <div class="showUpdateFolderDialogButton" id="<%=i%>" style="cursor: pointer;">Edit</div>
-                                <div><a href="/folder/<%=subFolders[i].id%>/Delete" style="cursor: pointer;">Delete</div>
+                                <div class="showUpdateFolderDialogButton" id="<%=subFolders[i].id%>" style="cursor: pointer;" data-name="<%=subFolders[i].name%>" >Edit</div>
+                                <div style="cursor: pointer;"><a href="/folder/<%=subFolders[i].id%>/delete">Delete</a></div>
                             </div>
                         </div>
                     <%}%>
 
                     <% for(let i = 0 ; i< files.length;i++){%>
+                        
                         <div class="eachRowData">
                             <div class="nameColumn"><a href="/folder/<%=files[i].id%>"><%=files[i].name%></a></div>
                             <div class="sizeColumn"><%= String(parseInt(files[i].size/1000))+" kb"%></div>
@@ -78,9 +80,10 @@
                             <div  class="dateColumn"><%=updatedAtTimeString%></div>
 
                             <div class="eachRowOptions optionsColumn">
-                                <div><a href="<%=files[i].url%>" download>Download</a></div>
-                                <div class="showUpdateFileNameDialogButton" id="<%=i%>" style="cursor: pointer;" >Edit</div>
-                                <div style="cursor: pointer;">Delete</div>
+                                <!-- <div><a class="downloadLink"+ href="<%=files[i].url%>" download="files[i].name">Download</a></div> -->
+                                <div class="downloadLink" data-href="<%=files[i].url%>" data-name ="<%=files[i].name%>"  style="cursor: pointer;" >Download</div>
+                                <div class="showUpdateFileNameDialogButton" id="<%=files[i].id%>" style="cursor: pointer;" data-name="<%=files[i].name%>" >Edit</div>
+                                <div style="cursor: pointer;"><a href="/file/<%=files[i].id%>/delete">Delete</a></div>
                             </div>
                         </div>
                     <%}%>    

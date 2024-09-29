@@ -5,12 +5,8 @@
             
                 <div>Hi @Username</div>
                 <div><a href="/">Home</a></div>
-                <% console.log("Root Folder variable in HEADER.ejs")%>
-                <% console.log(locals.rootFolder)%>
-                <% console.log("USer in HEADER.ejs")%>
-                <% console.log(user)%>
                 <% const currentUserRootFolder = "/folder/"+locals.rootFolder%>
-                <div><a href="<%=currentUserRootFolder%>"+>Go to Drive</a></div>
+                <div><a id="rootFolderDrive" href="<%=currentUserRootFolder%>"+>Go to Drive</a></div>
                 <div><a href="/log-out">Log Out</a></div>
             
             

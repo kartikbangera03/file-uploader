@@ -1,5 +1,5 @@
 function getDateString(timestamp){
-    console.log("CONVERTING DATE STRING......................")
+    // console.log("CONVERTING DATE STRING......................")
     const timeDiff = Date.now() - timestamp; 
     let timestring;
 
@@ -28,12 +28,17 @@ function getDateString(timestamp){
     return timestring;
 }
 
-function openUpdateFileNameDialog(file_id){
-    
+function startDownload(url,name){
+    const link = document.createElement("a");
+  link.download = name;
+  link.href = uri;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 
 }
 
 module.exports = {
     getDateString,
-    openUpdateFileNameDialog
+    startDownload
 }
