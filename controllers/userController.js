@@ -36,7 +36,13 @@ const validateSignUpForm = [
         .isLength({ max: 255 })
         .withMessage("Email too long")
         .custom(async (value, { req }) => {
-            const user = await db.getUserByEmail(req.body.userEmail)
+            // const user = await db.getUserByEmail(req.body.userEmail)
+
+            const user =  await prisma.user.findUnique({
+                where:{
+                    username : req.body.userEmail
+                }
+            })
             if (user) {
                 throw new Error("A user already exists with this e-mail address")
             }
@@ -116,7 +122,7 @@ exports.getSignUpForm = asyncHandler(async (req, res) => {
 
 
 exports.postInsertUser = [
-    // validateSignUpForm ,
+    validateSignUpForm ,
 
     asyncHandler(async (req, res) => {
         const errors = validationResult(req);

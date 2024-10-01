@@ -4,11 +4,19 @@
     padding: 0;
 }
 
+a , .clickableDivs{
+    text-decoration: none;
+    color: dodgerblue;
+}
 
+a:hover , .clickableDivs:hover{
+    text-decoration: underline;
+}
 
 .header{
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 20px 50px;
     box-shadow: 2px 2px 10px 2px lightgray;
 }
@@ -69,9 +77,10 @@ form button{
 }
 
 .folderOptions{
-    width: 1000px;
+    /* width: 1000px; */
     display: flex;
     justify-content: space-between;
+    padding-bottom: 30px;
     /* border: 1px solid black; */
 }
 
@@ -83,14 +92,14 @@ form button{
     gap: 20px;
 }
 .eachRowData{
-    width: 1200px;
+    /* width: 1200px; */
     padding: 10px 0px;
     border-bottom: 1px solid lightgray;
 }
 
 .nameColumn{
     /* border: 1px solid grey; */
-    width: 500px;
+    width: 400px;
 }
 
 .sizeColumn{
@@ -99,11 +108,49 @@ form button{
 }
 
 .dateColumn{
-    width: 150px;
+    width: 200px;
     text-align: center;
 }
 
 .optionsColumn{
-    width: 200px;
+    width: 250px;
     
+}
+
+svg{
+    width: 50px;
+
+}
+
+.clickableDivs:hover{
+    color: dodgerblue;
+}
+
+.eachRowData:hover{
+    background-color: whitesmoke;
+}
+
+.newFolderButton{
+    border: 1px solid white;
+
+}
+
+.subFoldersAndFiles{
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    
+}
+
+.columnHeaders{
+    background-color: lightgray;
+    
+}
+
+.folderEmptyDiv{
+   
+    text-align: center;
+}
+
+.eachRowData , .columnHeaders , .folderEmptyDiv{
+    padding: 10px 20px;
 }

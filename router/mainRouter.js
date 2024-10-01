@@ -35,7 +35,8 @@ const upload = multer({  storage: storage })
 
 router.get("/folder/:id", userController.getFolder);
 
-router.post("/folder/:id", userController.postFolder);
+// router.post("/folder/:id", userController.postFolder);
+router.get("/folder/:id/add_folder", userController.postFolder);
 
 router.post("/folder/:id/upload-file",upload.single('uploaded-file'),userController.postUploadFileForm);
 
