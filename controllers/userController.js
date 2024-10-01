@@ -43,6 +43,8 @@ const validateSignUpForm = [
                     username : req.body.userEmail
                 }
             })
+            console.log("FROM BODY VALIDATOR, USER : ")
+            console.log(user)
             if (user) {
                 throw new Error("A user already exists with this e-mail address")
             }
@@ -70,7 +72,11 @@ const validateLogInForm = [
         .isEmail()
         .withMessage("Please Enter the Email Address used while Signup")
         .custom(async (value, { req }) => {
-            const user = await db.getUserByEmail(req.body.username)
+            const user =  await prisma.user.findUnique({
+                where:{
+                    username : req.body.username
+                }
+            })
             if (!user) {
                 throw new Error("Invalid User Email")
             }
@@ -81,7 +87,11 @@ const validateLogInForm = [
         .withMessage("Password cannot be empty")
         .custom(async (value, { req }) => {
             // inject Prisma Code Instead
-            const user = await db.getUserByEmail(req.body.username);
+            const user =  await prisma.user.findUnique({
+                where:{
+                    username : req.body.username
+                }
+            })
             if (!user) {
                 throw new Error("Check User Email")
             }
@@ -93,31 +103,8 @@ const validateLogInForm = [
 ]
 
 
-// const validateCreateNewForm = [
-//     body("title")
-//     .trim()
-//     .notEmpty()
-//     .withMessage("Title cannot be empty")
-//     .isLength({max:255})
-//     .withMessage("Lastname too long"),
-
-//     body("post")
-//     .notEmpty()
-//     .withMessage("Description cannot be empty")
-// ]
-
-// const validationJoinClubForm = [
-//     body("secretCode")
-//     .trim()
-//     .notEmpty()
-//     .withMessage("Secret Code Cannot be Empty")
-// ]
-
-
-
 exports.getSignUpForm = asyncHandler(async (req, res) => {
     res.render("sign-up-form", { user: req.user, title: "Sign Up" })
-    // res.send("Sign Up Form Here");
 })
 
 
@@ -129,6 +116,8 @@ exports.postInsertUser = [
 
         if (!errors.isEmpty()) {
             return res.status(400).render("sign-up-form", {
+                user : req.user,
+                title: "Sign Up",
                 errors: errors.array()
             })
         }
@@ -177,7 +166,7 @@ exports.getLoginForm = asyncHandler(async (req, res) => {
 
 
 exports.postLoginForm = [
-    // validateLogInForm ,  
+    validateLogInForm ,  
 
     asyncHandler(async (req, res, next) => {
         const errors = validationResult(req);

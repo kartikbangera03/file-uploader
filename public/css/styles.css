@@ -154,3 +154,11 @@ svg{
 .eachRowData , .columnHeaders , .folderEmptyDiv{
     padding: 10px 20px;
 }
+
+.errorMessages{
+    color: red;
+}
+
+.errorMessagesDiv{
+    padding: 0px 20px;
+}
