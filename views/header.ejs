@@ -6,7 +6,7 @@
     <div class="options">
         <% if(user){%>
             
-                <div><i class="fa-regular fa-user" ></i> Hi @Username</div>
+                <div><i class="fa-regular fa-user" ></i> Hi <%=user.username.substring(0,7)%>..</div>
                 <div><a href="/"><i class="fa-solid fa-house"></i> Home</a></div>
                 <% const currentUserRootFolder = "/folder/"+locals.rootFolder%>
                 <div><a id="rootFolderDrive" href="<%=currentUserRootFolder%>"><i class="fa-solid fa-folder-tree"></i> Go to Drive</a></div>

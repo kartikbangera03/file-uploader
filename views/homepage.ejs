@@ -13,7 +13,12 @@
                     Our platform is designed to help you quickly upload, access, and share your files without the clutter. Enjoy a clean, user-friendly interface that puts your productivity first, allowing you to focus on what matters most. Experience hassle-free file management today—simple, secure, and always at your fingertips.
                 </div>
                 <div class="homeButton">
-                    <a href="/log-in"><button>Get Started</button></a>
+                    <% if(user){%>
+                        <% const currentUserRootFolder = "/folder/"+locals.rootFolder%>
+                    <a href="<%=currentUserRootFolder%>"><button>Get Started</button></a>
+                    <%}else{%>
+                        <a href="/log-in"><button>Get Started</button></a>
+                    <%}%>  
                 </div>
             </div>
             

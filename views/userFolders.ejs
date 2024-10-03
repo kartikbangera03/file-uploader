@@ -10,100 +10,105 @@
         <div class="mainBody">
 
             <!-- check if logged in user is same as folders owner -->
-            <!-- <%if(user.id === folderInfo.user_id){%> -->
-            <!-- <%}else{%>    -->
-            <!-- <%}%> -->
+            <%if(user.id === folderInfo.user_id){%>
+                <div>
+
+                    <div class="folderOptions">
+                        <!-- if root then my library else back link to prev parentfolder -->
+                     
+                        <% if(folderInfo.parentFolderId) {%>
+                            <div class=" clickableDivs"><a href="/folder/<%=folderInfo.parentFolderId%>"><i class="fa-regular fa-circle-left"></i> Prev Folder</a></div>
+                        <%}else{%>
+                            <div><i class="fa-regular fa-folder-closed"></i> My Library</div>
+                        <%}%>
+                        <!-- <div class=" clickableDivs"><i class="fa-regular fa-circle-left"></i> My Library</div> -->
+                        <div class="options">
+                            <!-- create new folder in current folder -->
+                            <!-- form post to add new folder in same link -->
+                            
+                            <!-- <form   id="newFolderForm" method="post">
+                                <button id="newFolderButton" class="linkButton clickableDivs" type="submit"><i class="fa-solid fa-folder-plus"></i> New Folder</button>
+                            </form> -->
+                            <div><a href="/folder/<%=folderInfo.id%>/add_folder"><i class="fa-solid fa-folder-plus"></i> New Folder</a></div>
+                            <div class="showUploadDialogButton clickableDivs"><i class="fa-solid fa-arrow-up-from-bracket"></i> Upload File</div>
+        
+                        </div>
+        
+                        
+                    </div>
+    
+                    <div class="subFoldersAndFiles" >
+                        <!-- Show all files and folders here -->
+                        <!-- Name Size Created Last-Update Options -->
+                        <!-- Temporarily Showing list of subfolders -->
+                        
+    
+                        <div class="columnHeaders eachRowData">
+                            <div class="nameColumn">Name</div>
+                            <div class="sizeColumn">Size</div>
+                            <div class="dateColumn">Created</div>
+                            <div class="dateColumn">Last Updated</div>
+                            <div class="optionsColumn">Options</div>
+                        </div>
+    
+                        <% for(let i = 0 ; i< subFolders.length;i++){%>
+                            
+                            <div class="eachRowData">
+                                <div class="nameColumn"><a href="/folder/<%=subFolders[i].id%>"><i class="fa-regular fa-folder-closed"></i> <%=subFolders[i].name%></a></div>
+                                <div class="sizeColumn" >-</div>
+                           
+                                <% const createdAtTimeString =  commonFunctions.getDateString(Date.parse(String(subFolders[i].createdAt)))%>
+                                <div class="dateColumn"><%=createdAtTimeString%></div>
+    
+                                <% const updatedAtTimeString =  commonFunctions.getDateString(Date.parse(String(subFolders[i].updatedAt)))%>
+                                <div  class="dateColumn"><%=updatedAtTimeString%></div>
+                                <div class="eachRowOptions optionsColumn">
+                                    <div class="showUpdateFolderDialogButton clickableDivs" id="<%=subFolders[i].id%>" style="cursor: pointer;" data-name="<%=subFolders[i].name%>" ><i class="fa-regular fa-pen-to-square"></i> Edit</div>
+                                    <div style="cursor: pointer;"><a href="/folder/<%=subFolders[i].id%>/delete"><i class="fa-regular fa-trash-can"></i> Delete</a></div>
+                                </div>
+                            </div>
+                        <%}%>
+    
+                        <% for(let i = 0 ; i< files.length;i++){%>
+                            
+                            <div class="eachRowData">
+                                <div class="nameColumn"><a href=""><i class="fa-regular fa-file"></i> <%=files[i].name%></a></div>
+                                <div class="sizeColumn"><%= String(parseInt(files[i].size/1000))+" kb"%></div>
+                                
+                                <% const createdAtTimeString =  commonFunctions.getDateString(Date.parse(String(files[i].createdAt)))%>
+                                <div class="dateColumn"><%=createdAtTimeString%></div>
+    
+                                <% const updatedAtTimeString =  commonFunctions.getDateString(Date.parse(String(files[i].updatedAt)))%>
+                                <div  class="dateColumn"><%=updatedAtTimeString%></div>
+    
+                                <div class="eachRowOptions optionsColumn">
+                                    <!-- <div><a class="downloadLink"+ href="<%=files[i].url%>" download="files[i].name">Download</a></div> -->
+                                    <div class="downloadLink  clickableDivs" data-href="<%=files[i].url%>" data-name ="<%=files[i].name%>"  style="cursor: pointer;" >
+                                        <i class="fa-solid fa-download"></i> 
+                                        <span>Download</span>
+                                    </div>
+                                    <div class="showUpdateFileNameDialogButton  clickableDivs" id="<%=files[i].id%>" style="cursor: pointer;" data-name="<%=files[i].name%>" ><i class="fa-regular fa-pen-to-square"></i> Edit</div>
+                                    <div style="cursor: pointer;"><a href="/file/<%=files[i].id%>/delete"><i class="fa-regular fa-trash-can"></i> Delete</a></div>
+                                </div>
+                            </div>
+                        <%}%>  
+                        
+                        <%if(subFolders.length===0 && files.length===0){%>
+                            <div class="folderEmptyDiv">This Folder is Empty</div>
+                        <%}%>
+    
+                        
+                    </div>
+                </div>
+
+
+            <%}else{%>   
+
+                <div>You are Not Authorized to view this Folder</div>
+            <%}%>
             
 
-            <div>
-
-                <div class="folderOptions">
-                    <!-- if root then my library else back link to prev parentfolder -->
-                 
-                    <% if(folderInfo.parentFolderId) {%>
-                        <div class=" clickableDivs"><a href="/folder/<%=folderInfo.parentFolderId%>"><i class="fa-regular fa-circle-left"></i> Prev Folder</a></div>
-                    <%}else{%>
-                        <div><i class="fa-regular fa-folder-closed"></i> My Library</div>
-                    <%}%>
-                    <!-- <div class=" clickableDivs"><i class="fa-regular fa-circle-left"></i> My Library</div> -->
-                    <div class="options">
-                        <!-- create new folder in current folder -->
-                        <!-- form post to add new folder in same link -->
-                        
-                        <!-- <form   id="newFolderForm" method="post">
-                            <button id="newFolderButton" class="linkButton clickableDivs" type="submit"><i class="fa-solid fa-folder-plus"></i> New Folder</button>
-                        </form> -->
-                        <div><a href="/folder/<%=folderInfo.id%>/add_folder"><i class="fa-solid fa-folder-plus"></i> New Folder</a></div>
-                        <div class="showUploadDialogButton clickableDivs"><i class="fa-solid fa-arrow-up-from-bracket"></i> Upload File</div>
-    
-                    </div>
-    
-                    
-                </div>
-
-                <div class="subFoldersAndFiles" >
-                    <!-- Show all files and folders here -->
-                    <!-- Name Size Created Last-Update Options -->
-                    <!-- Temporarily Showing list of subfolders -->
-                    
-
-                    <div class="columnHeaders eachRowData">
-                        <div class="nameColumn">Name</div>
-                        <div class="sizeColumn">Size</div>
-                        <div class="dateColumn">Created</div>
-                        <div class="dateColumn">Last Updated</div>
-                        <div class="optionsColumn">Options</div>
-                    </div>
-
-                    <% for(let i = 0 ; i< subFolders.length;i++){%>
-                        
-                        <div class="eachRowData">
-                            <div class="nameColumn"><a href="/folder/<%=subFolders[i].id%>"><i class="fa-regular fa-folder-closed"></i> <%=subFolders[i].name%></a></div>
-                            <div class="sizeColumn" >-</div>
-                       
-                            <% const createdAtTimeString =  commonFunctions.getDateString(Date.parse(String(subFolders[i].createdAt)))%>
-                            <div class="dateColumn"><%=createdAtTimeString%></div>
-
-                            <% const updatedAtTimeString =  commonFunctions.getDateString(Date.parse(String(subFolders[i].updatedAt)))%>
-                            <div  class="dateColumn"><%=updatedAtTimeString%></div>
-                            <div class="eachRowOptions optionsColumn">
-                                <div class="showUpdateFolderDialogButton clickableDivs" id="<%=subFolders[i].id%>" style="cursor: pointer;" data-name="<%=subFolders[i].name%>" ><i class="fa-regular fa-pen-to-square"></i> Edit</div>
-                                <div style="cursor: pointer;"><a href="/folder/<%=subFolders[i].id%>/delete"><i class="fa-regular fa-trash-can"></i> Delete</a></div>
-                            </div>
-                        </div>
-                    <%}%>
-
-                    <% for(let i = 0 ; i< files.length;i++){%>
-                        
-                        <div class="eachRowData">
-                            <div class="nameColumn"><a href="/folder/<%=files[i].id%>"><i class="fa-regular fa-file"></i> <%=files[i].name%></a></div>
-                            <div class="sizeColumn"><%= String(parseInt(files[i].size/1000))+" kb"%></div>
-                            
-                            <% const createdAtTimeString =  commonFunctions.getDateString(Date.parse(String(files[i].createdAt)))%>
-                            <div class="dateColumn"><%=createdAtTimeString%></div>
-
-                            <% const updatedAtTimeString =  commonFunctions.getDateString(Date.parse(String(files[i].updatedAt)))%>
-                            <div  class="dateColumn"><%=updatedAtTimeString%></div>
-
-                            <div class="eachRowOptions optionsColumn">
-                                <!-- <div><a class="downloadLink"+ href="<%=files[i].url%>" download="files[i].name">Download</a></div> -->
-                                <div class="downloadLink  clickableDivs" data-href="<%=files[i].url%>" data-name ="<%=files[i].name%>"  style="cursor: pointer;" >
-                                    <i class="fa-solid fa-download"></i> 
-                                    <span>Download</span>
-                                </div>
-                                <div class="showUpdateFileNameDialogButton  clickableDivs" id="<%=files[i].id%>" style="cursor: pointer;" data-name="<%=files[i].name%>" ><i class="fa-regular fa-pen-to-square"></i> Edit</div>
-                                <div style="cursor: pointer;"><a href="/file/<%=files[i].id%>/delete"><i class="fa-regular fa-trash-can"></i> Delete</a></div>
-                            </div>
-                        </div>
-                    <%}%>  
-                    
-                    <%if(subFolders.length===0 && files.length===0){%>
-                        <div class="folderEmptyDiv">This Folder is Empty</div>
-                    <%}%>
-
-                    
-                </div>
-            </div>
+            
         </div>
     </body>
     <script src="/dialogController.js"></script>

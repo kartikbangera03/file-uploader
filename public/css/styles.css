@@ -238,3 +238,58 @@ svg{
     font-style: italic;
     color: dodgerblue;
 }
+
+dialog{
+    margin-left:40% ;
+    margin-top: 40vh;
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 20px;
+
+}
+
+.dialogContents{
+    display: flex;
+    flex-direction: column;
+}
+
+.dialogContents h3{
+    align-self: center;
+}
+
+.dialogCloseButton{
+    align-self: flex-end;
+    outline: none;
+    border: none;
+    border-radius: 40%;
+    padding: 10px;
+    font-weight: bolder;
+    color: red;
+    background-color:lightgray;
+
+}
+
+.dialogCloseButton:hover{
+    color: crimson;
+    background-color: gray;
+}
+
+dialog form{
+    border: none;
+}
+
+.dialogFormButtonsDiv{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.dialogFromButtons{
+    width: 100px;
+}
+
+.dialogFormCloseButton{
+    background-color: red;
+}
+
+
