@@ -2,12 +2,16 @@
 
 
     <div class="dialogContents">
-        <button class="cancelButton dialogCloseButton">X</button>
-        <h3>Upload File</h3>
-        <h5>Max File Size : 10Mb</h5>
+        <div class="dialogHeader">
+            <div class="dialogHeading">Upload File</div>
+            <button class="cancelButton dialogCloseButton">X</button>
+        </div>
+        
+        <div class="dialogSubHeading">Max File Size : 10Mb</div>
+        
         <form action="<%=uploadLink%>" method="POST" enctype="multipart/form-data">
-            <input type="file" name="uploaded-file" />
-            <button class="uploadFileButton" type="submit">submit</button>
+            <input type="file" name="uploaded-file" id="uploaded-file" required/>
+            <button class="uploadFileButton submitButton" type="submit">UPLOAD</button>
         </form>
         
 

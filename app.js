@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 const express = require("express");
 const bcrypt = require("bcryptjs")
 const session = require("express-session");
@@ -64,7 +63,6 @@ passport.use(
 
 
 passport.serializeUser((user, done) => {
-  console.log("Serializing Id");
   done(null, user.id);
 
 });
@@ -72,8 +70,6 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    console.log("Deserializing Id");
-
     const user = await prisma.user.findUnique({
       where: {
         id: id

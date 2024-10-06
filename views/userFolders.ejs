@@ -62,10 +62,26 @@
     
                                 <% const updatedAtTimeString =  commonFunctions.getDateString(Date.parse(String(subFolders[i].updatedAt)))%>
                                 <div  class="dateColumn"><%=updatedAtTimeString%></div>
-                                <div class="eachRowOptions optionsColumn">
+                                <!-- <div class="eachRowOptions optionsColumn">
                                     <div class="showUpdateFolderDialogButton clickableDivs" id="<%=subFolders[i].id%>" style="cursor: pointer;" data-name="<%=subFolders[i].name%>" ><i class="fa-regular fa-pen-to-square"></i> Edit</div>
                                     <div style="cursor: pointer;"><a href="/folder/<%=subFolders[i].id%>/delete"><i class="fa-regular fa-trash-can"></i> Delete</a></div>
+                                </div> -->
+
+                                <div class="eachRowOptions optionsColumn">
+                                    <div class="menu-container">
+                                        <div class="three-dots" >
+                                            &#8230; <!-- This represents the three dots -->
+                                        </div>
+                                        <div class="dropdown-menu dropdown-menu-hidden" id="dropdown">
+                                           
+                                                <div class="showUpdateFolderDialogButton clickableDivs" id="<%=subFolders[i].id%>" style="cursor: pointer;" data-name="<%=subFolders[i].name%>" ><i class="fa-regular fa-pen-to-square"></i> Edit</div>
+                                                <div style="cursor: pointer;"><a href="/folder/<%=subFolders[i].id%>/delete"><i class="fa-regular fa-trash-can"></i> Delete</a></div>
+                                           
+                                        </div>
+                                    </div>
+
                                 </div>
+                                
                             </div>
                         <%}%>
     
@@ -81,15 +97,30 @@
                                 <% const updatedAtTimeString =  commonFunctions.getDateString(Date.parse(String(files[i].updatedAt)))%>
                                 <div  class="dateColumn"><%=updatedAtTimeString%></div>
     
-                                <div class="eachRowOptions optionsColumn">
-                                    <!-- <div><a class="downloadLink"+ href="<%=files[i].url%>" download="files[i].name">Download</a></div> -->
-                                    <div class="downloadLink  clickableDivs" data-href="<%=files[i].url%>" data-name ="<%=files[i].name%>"  style="cursor: pointer;" >
-                                        <i class="fa-solid fa-download"></i> 
-                                        <span>Download</span>
-                                    </div>
+                                <!-- <div class="eachRowOptions optionsColumn">
+                                    <div><a class="downloadLink"+ href="<%=files[i].url%>" download="files[i].name">Download</a></div>
+                                    <div class="downloadLink  clickableDivs" data-href="<%=files[i].url%>" data-name ="<%=files[i].name%>"  style="cursor: pointer;" ><i class="fa-solid fa-download"></i><span>Download</span></div>
                                     <div class="showUpdateFileNameDialogButton  clickableDivs" id="<%=files[i].id%>" style="cursor: pointer;" data-name="<%=files[i].name%>" ><i class="fa-regular fa-pen-to-square"></i> Edit</div>
                                     <div style="cursor: pointer;"><a href="/file/<%=files[i].id%>/delete"><i class="fa-regular fa-trash-can"></i> Delete</a></div>
+                                </div> -->
+
+
+                                <div class="eachRowOptions optionsColumn">
+                                    <div class="menu-container">
+                                        <div class="three-dots" >
+                                            &#8230; <!-- This represents the three dots -->
+                                        </div>
+                                        <div class="dropdown-menu dropdown-menu-hidden" id="dropdown">
+                                           
+                                            <div class="downloadLink  clickableDivs" data-href="<%=files[i].url%>" data-name ="<%=files[i].name%>"  style="cursor: pointer;" ><i class="fa-solid fa-download"></i><span> Download</span></div>
+                                            <div class="showUpdateFileNameDialogButton  clickableDivs" id="<%=files[i].id%>" style="cursor: pointer;" data-name="<%=files[i].name%>" ><i class="fa-regular fa-pen-to-square"></i> Edit</div>
+                                            <!-- <div style="cursor: pointer;"><a href="/file/<%=files[i].id%>/delete"><i class="fa-regular fa-trash-can"></i> Delete</a></div> -->
+                                            <div class="clickableDivs" style="cursor: pointer;" onclick="location.href ='/file/<%=files[i].id%>/delete' "><i class="fa-regular fa-trash-can"></i> Delete</div>
+                                        </div>
+                                    </div>
+
                                 </div>
+                                
                             </div>
                         <%}%>  
                         

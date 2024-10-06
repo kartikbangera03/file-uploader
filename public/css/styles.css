@@ -108,12 +108,14 @@ form button{
 }
 
 .dateColumn{
-    width: 200px;
+    width: 250px;
     text-align: center;
 }
 
 .optionsColumn{
-    width: 250px;
+    width: 70px;
+    display: flex;
+    justify-content: center;
     
 }
 
@@ -129,6 +131,12 @@ svg{
 .eachRowData:hover{
     background-color: whitesmoke;
 }
+
+
+.eachRowData:first-child:hover{
+    background-color:lightgray;
+}
+
 
 .newFolderButton{
     border: 1px solid white;
@@ -208,7 +216,7 @@ svg{
 
 .eachHomepageCard{
     width: 400px;
-    height: 120px;
+    min-height: 120px;
     border: 1px solid lightgray;
     border-radius: 5px;
     padding: 10px 20px;
@@ -257,6 +265,14 @@ dialog{
     align-self: center;
 }
 
+.dialogHeader{
+    display: flex;
+    justify-content:space-between;
+    font-size: large;
+    font-weight: bold;
+}
+
+
 .dialogCloseButton{
     align-self: flex-end;
     outline: none;
@@ -265,13 +281,14 @@ dialog{
     padding: 10px;
     font-weight: bolder;
     color: red;
-    background-color:lightgray;
+    /* background-color:lightgray; */
 
 }
 
 .dialogCloseButton:hover{
     color: crimson;
-    background-color: gray;
+    transform: scale(1.2);
+    /* background-color: gray; */
 }
 
 dialog form{
@@ -292,4 +309,46 @@ dialog form{
     background-color: red;
 }
 
+.menu-container {
+    position: relative;
+ 
+}
 
+.three-dots {
+    cursor: pointer;
+    font-size: 24px;
+}
+
+.dropdown-menu {
+    /* display: none; Hide the dropdown by default */
+    position: absolute;
+    width: 125px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    margin-top: 5px;
+}
+
+.dropdown-menu div{
+    padding: 5px;
+    border-bottom: 1px solid lightgray;
+}
+
+.dropdown-menu div:hover{
+    background-color: whitesmoke;
+}
+
+.dropdown-menu div:last-child{
+    border-bottom: none;
+}
+
+.dropdown-menu.dropdown-menu-hidden{
+    display: none;
+}
+
+.formBottom{
+    display: flex;
+    justify-content: space-between;
+}

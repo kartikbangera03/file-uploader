@@ -2,12 +2,14 @@
 <dialog id="updateFolderNameDialog">
 
     <div class="dialogContents">
+        <div class="dialogHeader">
+            <div class="dialogHeading">Change Folder Name</div>
+            <button autofocus class="closeUpdateFolderDialog dialogCloseButton">X</button>
+        </div>
         
-        <button autofocus class="closeUpdateFolderDialog dialogCloseButton">X</button>
-        <h3>Change Folder Name</h3>
         <form id="updateFolderNameForm" method="POST">
             <input id="updateFolderNameFormInput" type="text" name="updatedFolderName"  />
-            <button type="submit">submit</button>
+            <button class="submitButton" type="submit">Submit</button>
         </form>
     </div>
     

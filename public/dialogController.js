@@ -102,3 +102,56 @@ downloadLinksArray.forEach((downloadLink)=>{
         });
     })
 })
+
+// js for three dots 
+
+
+
+// console.log("NEW THREE DOTS SYSTEM")
+
+const three_dots = document.querySelectorAll(".three-dots")
+// console.log("THREE DOTS : ")
+// console.log(three_dots);
+
+three_dots.forEach((three_dot)=>{
+    three_dot.addEventListener("click" , ()=>{
+        console.log("THREE DOTS CLICKED.......")
+        const all_dropdowns = document.getElementsByClassName('dropdown-menu');
+       
+        const dropdown = three_dot.nextSibling.nextSibling;
+
+        for (let i = 0; i < all_dropdowns.length; i++) {
+            if(all_dropdowns[i]!==dropdown)
+            all_dropdowns[i].style.display = 'none';
+        }
+        // console.log("DROP DOWN : ")
+        // console.log(dropdown)
+        // dropdown.classlist.toggle("dropdown-menu-hidden")
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    })
+    
+})
+
+
+window.onclick = function(event) {
+    if (!event.target.matches('.three-dots')) {
+        const dropdowns = document.getElementsByClassName('dropdown-menu');
+        for (let i = 0; i < dropdowns.length; i++) {
+            dropdowns[i].style.display = 'none';
+        }
+    }
+}
+
+
+// Set file length limit
+
+const uploadFileField = document.getElementById("uploaded-file");
+
+uploadFileField.onchange = function(){
+    if(this.files[0].size > 10000000){
+        alert("File is Too big. Max File Size is 10Mb");
+        this.value = "";
+    }
+}
+
+

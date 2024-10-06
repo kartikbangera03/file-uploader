@@ -43,8 +43,7 @@ const validateSignUpForm = [
                     username : req.body.userEmail
                 }
             })
-            console.log("FROM BODY VALIDATOR, USER : ")
-            console.log(user)
+
             if (user) {
                 throw new Error("A user already exists with this e-mail address")
             }
@@ -144,7 +143,6 @@ exports.postInsertUser = [
                     },
                 })
 
-                console.log(user);
                 res.redirect("/log-in");
             });
         } catch (err) {
@@ -188,16 +186,12 @@ exports.postLoginForm = [
     asyncHandler(async (req, res) => {
         // From req.user we use Id to get folder via user_id of folder 
         // After getting the folder we redirect to that folder as our home drive
-        console.log("Req User")
-        console.log(req.user)
         const rootFolder = await prisma.folder.findMany({
             where: {
                 user_id: req.user.id,
                 parentFolder: null
             }
         })
-        console.log("ROOT FOLDER")
-        console.log(rootFolder)
 
         req.session.homeFolderId = rootFolder[0].id
         res.redirect("/folder/" + rootFolder[0].id)
@@ -222,8 +216,7 @@ exports.getUploadFileForm = asyncHandler(async (req, res, next) => {
 
 
 exports.postUploadFileForm = asyncHandler(async (req, res, next) => {
-    console.log("FIle Uploaded")
-    console.log(req.file)
+
     cloudinary.uploader.upload(req.file.path, { resource_type: "raw", use_filename: true, unique_filename: false, }, async function (err, result) {
         if (err) {
             console.log(err)
@@ -243,17 +236,13 @@ exports.postUploadFileForm = asyncHandler(async (req, res, next) => {
                 public_id : result.public_id
             }
         })
-        console.log("UPLOADED FILE DETAILS ")
-        console.log(result)
-        console.log("NEW FILE ENTRY DETAILS ")
-        console.log(newFile);
 
         // 2=> Delete File From local Storage
         fs.unlink(req.file.path, (err) => {
             if (err) {
                 console.error(err);
             } else {
-                console.log("File Deleted From Local Storage Successfully        <%- include ('./functions') %>  !!");
+                console.log("File Deleted From Local Storage Successfully!!");
             }
         })
 
@@ -290,12 +279,6 @@ exports.getFolder = asyncHandler(async (req, res, next) => {
         }
     })
 
-    console.log("Folder")
-    console.log(folderInfo)
-    console.log("Sub Folders")
-    console.log(subFolders)
-    console.log("Files")
-    console.log(files)
     res.render("userFolders", {
         user: req.user,
         folderInfo: folderInfo,
@@ -366,17 +349,7 @@ exports.deleteFolder = asyncHandler(async(req,res)=>{
 
     }   
 
-    console.log("Folders List to be Deleted",folderIdsArray)
-    console.log("Files List to be Deleted ",fileIdsArray);
     // Add logic to Delete Many Ids , first using cloudinary for files and then using Prisma for folders and files both 
-
-    // await cloudinary.api.delete_resources(
-    //     fileIdsArray,
-    //     function(error, result) {
-    //         console.log(result, error)
-    //     }
-    // );
-
 
     fileIdsArray.forEach(async (filePublic_id)=>{
         await cloudinary.uploader.destroy(filePublic_id, { invalidate: true,resource_type: 'raw' }).then(result => console.log(result))
@@ -398,11 +371,6 @@ exports.deleteFolder = asyncHandler(async(req,res)=>{
         }
     })
 
-    console.log("Deleted Files :")
-    console.log(deletedFiles);
-    console.log("Deleted Folders :")
-    console.log(deletedFolders);
-
     res.redirect("/folder/"+folderInfo.parentFolderId)
 })
 
@@ -423,9 +391,6 @@ exports.postFolder = asyncHandler(async (req, res) => {
 
 exports.updateFolder = asyncHandler(async(req,res)=>{
     const folderId = parseInt(req.params.id);   
-    // console.log("Update Details : ")
-    // console.log(folderId)
-    // console.log(req.body.updatedFolderName)
     const updatedFolder = await prisma.folder.update({
         where:{
             id: folderId,
@@ -434,7 +399,7 @@ exports.updateFolder = asyncHandler(async(req,res)=>{
             name: req.body.updatedFolderName,
         },
     })
-    console.log(updatedFolder)
+
     res.redirect("/folder/"+ updatedFolder.parentFolderId)
 })
 
@@ -463,9 +428,6 @@ exports.deleteFile = asyncHandler(async(req,res)=>{
         }
     })
 
-    console.log("DELETED FILE")
-    console.log(deletedFile)
-    console.log("DELETED FILE FROM CLOUDINARY")
     await cloudinary.uploader.destroy(deletedFile.public_id, { invalidate: true,resource_type: 'raw' }).then(result => console.log(result))
     res.redirect("/folder/"+ deletedFile.parentFolderId)
 });
