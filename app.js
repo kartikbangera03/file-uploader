@@ -17,7 +17,7 @@ app.use(
       defaultSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com"],
       scriptSrc: ["'self'", "https://cdnjs.cloudflare.com"],
-      imgSrc: ["'self'", "data:", "https://example.com"],
+      imgSrc: ["'self'", "https://file-uploader-webapp.adaptable.app"],
       // Add other directives as needed
     },
   })

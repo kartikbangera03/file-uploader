@@ -216,7 +216,7 @@ exports.getUploadFileForm = asyncHandler(async (req, res, next) => {
 
 
 exports.postUploadFileForm = asyncHandler(async (req, res, next) => {
-
+    console.log("Cloudinary Upload Post Controller....")
     cloudinary.uploader.upload(req.file.path, { resource_type: "raw", use_filename: true, unique_filename: false, }, async function (err, result) {
         if (err) {
             console.log(err)
@@ -236,6 +236,8 @@ exports.postUploadFileForm = asyncHandler(async (req, res, next) => {
                 public_id : result.public_id
             }
         })
+        console.log("Cloudinary Upload Post Controller....NEW FILE ENTRY CREATED")
+        console.log(newFile)
 
         // 2=> Delete File From local Storage
         fs.unlink(req.file.path, (err) => {
