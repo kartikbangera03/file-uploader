@@ -11,6 +11,11 @@ const prisma = new PrismaClient();
 const { PrismaSessionStore } = require('@quixo3/prisma-session-store');
 const app = express();
 
+app.use(function(req, res, next) {
+  res.setHeader("Content-Security-Policy", "default-src '*'");
+  return next();
+});
+
 app.set("view engine", "ejs");
 
 app.use(express.static(__dirname + '/public'));
