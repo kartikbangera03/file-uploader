@@ -12,7 +12,7 @@ const { PrismaSessionStore } = require('@quixo3/prisma-session-store');
 const app = express();
 
 app.use(function(req, res, next) {
-  res.setHeader("Content-Security-Policy", "default-src '*'");
+  res.setHeader("Content-Security-Policy", "default-src 'self'");
   return next();
 });
 
