@@ -10,11 +10,18 @@ const { PrismaClient } = require("@prisma/client")
 const prisma = new PrismaClient();
 const { PrismaSessionStore } = require('@quixo3/prisma-session-store');
 const app = express();
-
-app.use(function(req, res, next) {
-  res.setHeader("Content-Security-Policy", "default-src 'self'", "img-src: 'https://*.cloudinary.com'");
-  return next();
-});
+const helmet = require('helmet');
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com"],
+      scriptSrc: ["'self'", "https://cdnjs.cloudflare.com"],
+      imgSrc: ["'self'", "data:", "https://example.com"],
+      // Add other directives as needed
+    },
+  })
+);
 
 app.set("view engine", "ejs");
 
