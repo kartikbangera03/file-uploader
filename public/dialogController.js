@@ -80,14 +80,23 @@ downloadLinksArray.forEach((downloadLink)=>{
         const url =  downloadLink.getAttribute("data-href");
         const downloadName = downloadLink.getAttribute("data-name");
 
+        console.log("DOWNLOAD BUTTON CLICKED")
+        console.log("URL")
+        console.log(url)
+        console.log("Download Name")
+        console.log(downloadName)
         fetch(url,{ method:'GET', mode:'cors'})
         .then( response =>{
             if(!response.ok){
                 throw new Error("Network Response was not OK")
             }
+            console.log("FETCH RESPONSE")
+            console.log(response)
             return response.blob(); // get file as blob 
         })
         .then(blob =>{
+            console.log("BLOB FETCH RESPONSE")
+            console.log(blob)
             const download_url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.style.display = 'none';
