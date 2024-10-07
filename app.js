@@ -10,18 +10,18 @@ const { PrismaClient } = require("@prisma/client")
 const prisma = new PrismaClient();
 const { PrismaSessionStore } = require('@quixo3/prisma-session-store');
 const app = express();
-const helmet = require('helmet');
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com"],
-      scriptSrc: ["'self'", "https://cdnjs.cloudflare.com"],
-      imgSrc: ["'self'", "https://file-uploader-webapp.adaptable.app"],
-      // Add other directives as needed
-    },
-  })
-);
+// const helmet = require('helmet');
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       styleSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com"],
+//       scriptSrc: ["'self'", "https://cdnjs.cloudflare.com"],
+//       imgSrc: ["'self'", "https://file-uploader-webapp.adaptable.app"],
+//       // Add other directives as needed
+//     },
+//   })
+// );
 
 app.set("view engine", "ejs");
 
