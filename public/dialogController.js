@@ -77,7 +77,8 @@ const downloadLinksArray = document.querySelectorAll(".downloadLink")
 
 downloadLinksArray.forEach((downloadLink)=>{
     downloadLink.addEventListener("click",()=>{
-        const url =  downloadLink.getAttribute("data-href");
+        let url =  downloadLink.getAttribute("data-href");
+        url = url.replace(":","s:")
         const downloadName = downloadLink.getAttribute("data-name");
 
         console.log("DOWNLOAD BUTTON CLICKED")
